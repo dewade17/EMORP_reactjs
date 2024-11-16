@@ -1,5 +1,5 @@
 import { Col, Row, Typography, Card, FloatButton, Form, notification, Modal, Input, List, Popconfirm, Select, Tooltip } from 'antd';
-import { CustomerServiceOutlined, EditOutlined, DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { CustomerServiceOutlined, EditOutlined, DeleteOutlined, QuestionCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import { ellipsisGenerator } from '../../utils/ui';
 import { useEffect, useState } from 'react';
 import { getData, sendData, deleteData } from '../../utils/api';
@@ -15,6 +15,7 @@ const Playlist = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [idSelected, setIdSelected] = useState(null);
   const [isModalIntro, setIsModalIntro] = useState(false);
+  const [searchText, setSearctText] = useState('');
   useEffect(() => {
     getDataPlaylist();
   }, []);
@@ -183,6 +184,17 @@ const Playlist = () => {
       });
   };
 
+  //start-handleSearch
+  const handleSearch = (value) => {
+    setSearctText(value.toLowerCase());
+  };
+
+  let dataSourceFiltered = dataSource.filter((item) => {
+    return item?.play_name.toLowerCase().includes(searchText) || item?.play_description.toLowerCase().includes(searchText);
+  });
+
+  //End-handleSearch
+
   return (
     <div className='layout-content'>
       <Row gutter={[24, 0]}>
@@ -199,16 +211,29 @@ const Playlist = () => {
           </Card>
         </Col>
       </Row>
+      <Row gutter={(12, 0)}>
+        <Col>
+          <Input
+            prefix={<SearchOutlined />}
+            placeholder='Search Natures'
+            className='header-search'
+            allowClear
+            size='large'
+            onChange={(e) => handleSearch(e.target.value)}
+            style={{ width: '100%', marginLeft: '40px' }}
+          />
+        </Col>
+      </Row>
       <List
         grid={{ gutter: 16, xs: 1, xl: 3, sm: 1, md: 3, lg: 3 }}
-        dataSource={dataSource}
+        dataSource={(dataSourceFiltered ??= [])}
         renderItem={(item) => (
           <List.Item>
             <Row
               gutter={(24, 0)}
               style={{ margin: 'auto', justifyContent: 'center' }}
             >
-              <Col xs={22}>
+              <Col>
                 <Card
                   hoverable
                   style={{ width: 260 }}
@@ -226,12 +251,12 @@ const Playlist = () => {
                     <Popconfirm
                       key={item?.id}
                       title='Delete the task'
-                      description={`Are you sure to delete ${item?.play_description} ?`}
+                      description={`Are you sure to delete ${item?.play_name} ?`}
                       okText='Yes'
                       cancelText='No'
                       onConfirm={() => confirmDelete(item?.id_play)}
                     >
-                      <DeleteOutlined key={item?.id} />
+                      <DeleteOutlined key={item?.id_play} />
                     </Popconfirm>,
                   ]}
                 >
