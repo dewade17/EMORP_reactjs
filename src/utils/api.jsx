@@ -1,16 +1,10 @@
-import { jwtStorage } from "./jwt_storage";
+import { jwtStorage } from './jwt_storage';
 
 const REACT_APP_API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
 export const getDataPublic = (url) => {
   return fetch(url)
-    .then((response) =>
-      response.status >= 200 &&
-      response.status <= 299 &&
-      response.status !== 204
-        ? response.json()
-        : response,
-    )
+    .then((response) => (response.status >= 200 && response.status <= 299 && response.status !== 204 ? response.json() : response))
     .then((data) => {
       return data;
     })
@@ -18,13 +12,7 @@ export const getDataPublic = (url) => {
 };
 export const getData = async (url) => {
   return fetch(REACT_APP_API_URL + url)
-    .then((response) =>
-      response.status >= 200 &&
-      response.status <= 299 &&
-      response.status !== 204
-        ? response.json()
-        : response,
-    )
+    .then((response) => (response.status >= 200 && response.status <= 299 && response.status !== 204 ? response.json() : response))
     .then((data) => {
       return data;
     })
@@ -38,13 +26,7 @@ export const getDataPrivate = async (url) => {
       Authorization: `Bearer ${token}`,
     },
   })
-    .then((response) =>
-      response.status >= 200 &&
-      response.status <= 299 &&
-      response.status !== 204
-        ? response.json()
-        : response,
-    )
+    .then((response) => (response.status >= 200 && response.status <= 299 && response.status !== 204 ? response.json() : response))
     .then((data) => {
       return data;
     })
@@ -55,16 +37,10 @@ export const getDataPrivate = async (url) => {
 
 export const sendData = async (url, data) => {
   return fetch(REACT_APP_API_URL + url, {
-    method: "POST",
+    method: 'POST',
     body: data,
   })
-    .then((response) =>
-      response.status >= 200 &&
-      response.status <= 299 &&
-      response.status !== 204
-        ? response.json()
-        : response,
-    )
+    .then((response) => (response.status >= 200 && response.status <= 299 && response.status !== 204 ? response.json() : response))
     .then((data) => data)
     .catch((err) => console.log(err));
 };
@@ -77,7 +53,7 @@ export const sendDataPrivate = async (url, data) => {
 
   let token = await jwtStorage.retrieveToken();
   const options = {
-    method: "POST",
+    method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -89,22 +65,14 @@ export const sendDataPrivate = async (url, data) => {
   console.log(options);
 
   return fetch(REACT_APP_API_URL + url, options)
-    .then((response) =>
-      response.status === 401
-        ? { isExpiredJWT: true }
-        : response.status >= 200 &&
-            response.status <= 299 &&
-            response.status !== 204
-          ? response.json()
-          : response,
-    )
+    .then((response) => (response.status === 401 ? { isExpiredJWT: true } : response.status >= 200 && response.status <= 299 && response.status !== 204 ? response.json() : response))
     .then((data) => data)
     .catch((err) => console.log(err));
 };
 
 export const deleteData = async (url, data) => {
   return fetch(REACT_APP_API_URL + url, {
-    method: "DELETE",
+    method: 'DELETE',
     body: data,
   })
     .then((response) => response)
@@ -118,22 +86,14 @@ export const editDataPrivatePut = async (url, data) => {
   //NOTE : You must special handle for HTTP status above
   let token = await jwtStorage.retrieveToken();
   return fetch(REACT_APP_API_URL + url, {
-    method: "PUT",
+    method: 'PUT',
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
   })
-    .then((response) =>
-      response.status === 401
-        ? { isExpiredJWT: true }
-        : response.status >= 200 &&
-            response.status <= 299 &&
-            response.status !== 204
-          ? response.json()
-          : response,
-    )
+    .then((response) => (response.status === 401 ? { isExpiredJWT: true } : response.status >= 200 && response.status <= 299 && response.status !== 204 ? response.json() : response))
     .then((data) => data)
     .catch((err) => console.log(err));
 };
@@ -146,22 +106,14 @@ export const editDataPrivateURLEncoded = async (url, data) => {
   // var token = localStorage.getItem("token_auth");
   let token = await jwtStorage.retrieveToken();
   return fetch(REACT_APP_API_URL + url, {
-    method: "PUT",
+    method: 'PUT',
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
     },
     body: data,
   })
-    .then((response) =>
-      response.status === 401
-        ? { isExpiredJWT: true }
-        : response.status >= 200 &&
-            response.status <= 299 &&
-            response.status !== 204
-          ? response.json()
-          : response,
-    )
+    .then((response) => (response.status === 401 ? { isExpiredJWT: true } : response.status >= 200 && response.status <= 299 && response.status !== 204 ? response.json() : response))
     .then((data) => data)
     .catch((err) => console.log(err));
 };
@@ -174,22 +126,14 @@ export const deleteDataPrivateURLEncoded = async (url, data) => {
   // var token = localStorage.getItem("token_auth");
   let token = await jwtStorage.retrieveToken();
   return fetch(REACT_APP_API_URL + url, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
     },
     body: data,
   })
-    .then((response) =>
-      response.status === 401
-        ? { isExpiredJWT: true }
-        : response.status >= 200 &&
-            response.status <= 299 &&
-            response.status !== 204
-          ? response.json()
-          : response,
-    )
+    .then((response) => (response.status === 401 ? { isExpiredJWT: true } : response.status >= 200 && response.status <= 299 && response.status !== 204 ? response.json() : response))
     .then((data) => data)
     .catch((err) => console.log(err));
 };
@@ -202,22 +146,14 @@ export const deleteDataPrivateJSON = async (url, data) => {
   // var token = localStorage.getItem("token_auth");
   let token = await jwtStorage.retrieveToken();
   return fetch(REACT_APP_API_URL + url, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: data,
   })
-    .then((response) =>
-      response.status === 401
-        ? { isExpiredJWT: true }
-        : response.status >= 200 &&
-            response.status <= 299 &&
-            response.status !== 204
-          ? response.json()
-          : response,
-    )
+    .then((response) => (response.status === 401 ? { isExpiredJWT: true } : response.status >= 200 && response.status <= 299 && response.status !== 204 ? response.json() : response))
     .then((data) => data)
     .catch((err) => console.log(err));
 };
@@ -225,9 +161,9 @@ export const deleteDataPrivateJSON = async (url, data) => {
 export const logoutAPI = async () => {
   let token = await jwtStorage.retrieveToken();
   let formData = new FormData();
-  formData.append("logout", "Logout"); // Assuming jwtStorage retrieves token
-  return fetch(REACT_APP_API_URL + "/api/auth/logout", {
-    method: "POST",
+  formData.append('logout', 'Logout'); // Assuming jwtStorage retrieves token
+  return fetch(REACT_APP_API_URL + '/api/auth/logout', {
+    method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -239,18 +175,35 @@ export const logoutAPI = async () => {
         return { isLoggedOut: true };
       } else {
         // Handle errors (e.g., unexpected status code)
-        console.error("Logout failed:", response.statusText);
+        console.error('Logout failed:', response.statusText);
         return false;
       }
     })
     .catch((error) => {
-      console.error("Logout error:", error);
+      console.error('Logout error:', error);
       return false;
     });
 };
 
 export const getImage = (url_image) => {
-  const imgDefault = "/storage/images/userpng_1717846018.png";
+  const imgDefault = '/storage/images/userpng_1717846018.png';
   let imgResult = url_image ? url_image : imgDefault;
   return REACT_APP_API_URL + imgResult;
+};
+
+export const getUserId = async () => {
+  try {
+    const userId = await localStorage.getItem('user_id');
+    if (userId) {
+      // Use the userId value here
+      console.log('User ID:', userId);
+      return userId;
+    } else {
+      console.log('No user ID found in localStorage');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error retrieving user ID:', error);
+    return null;
+  }
 };
